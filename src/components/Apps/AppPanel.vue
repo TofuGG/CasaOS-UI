@@ -334,10 +334,10 @@ export default {
     this.getStoreRecommend()
 
     // Get Max memory info form device
-    this.totalMemory = Math.floor(this.configData.memory.total / 1048576)
+    this.totalMemory = this.configData?.memory ? Math.floor(this.configData.memory.total / 1048576) : 0
 
     // Handling network types
-    this.tempNetworks = this.configData.networks
+    this.tempNetworks = this.configData?.networks || []
     this.networkModes = uniq(
       this.tempNetworks.map((item) => {
         return item.driver
@@ -457,6 +457,7 @@ export default {
         if (this.isFirst) {
           this.isFirst = false
         }
+        this.isLoading = false
       }
       catch (error) {
         this.loadErrorStep = 1
@@ -544,7 +545,7 @@ export default {
           }
         })
         this.pageList = listRes
-        this.installedList = res.installed
+        this.installedList = res.installed || []
       }
       catch (e) {
         console.log('load store list error', e)
