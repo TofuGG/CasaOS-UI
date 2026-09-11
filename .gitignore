@@ -35,3 +35,7 @@ unused-files.json
 .turbo
 
 /packages/icewhale*
+
+# Agent memory (local only, never committed)
+.opencode/agents-data/
+

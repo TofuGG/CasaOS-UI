@@ -1009,6 +1009,37 @@ export default {
   top: 0;
   left: calc(-100% - 14px);
 }
+
+// ZimaOS-inspired modern card
+.app-card {
+  background: hsla(0, 0%, 100%, 0.92) !important;
+  border: 1px solid hsla(208, 16%, 91%, 0.7);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    border-color: hsla(208, 16%, 85%, 0.9);
+  }
+
+  .img-c {
+    .b-image-wrapper {
+      img {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+      }
+    }
+  }
+
+  .one-line {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--casa-text, #0f172a);
+  }
+}
 </style>
 
 <style lang="scss">

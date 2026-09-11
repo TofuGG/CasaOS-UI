@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import qs from 'qs'
 import 'xterm/css/xterm.css'
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
@@ -113,8 +112,12 @@ export default {
 				await this.$api.sys.checkSshLogin(postData)
 				this.isConnecting = false
 				this.isVaild = true
-				postData.token = this.$store.state.access_token
-				this.wsUrl = `${this.$wsProtocol}//${this.$baseURL}/v1/sys/wsssh?${qs.stringify(postData)}`
+				// SECURITY: credentials are sent as the first WebSocket frame,
+				// never in the URL (query strings leak into access logs,
+				// proxies and browser history). Only the short-lived JWT is
+				// passed as a query param because browser WebSockets cannot
+				// set the Authorization header.
+				this.wsUrl = `${this.$wsProtocol}//${this.$baseURL}/v1/sys/wsssh?token=${this.$store.state.access_token}`
 				this.initSocket();
 			} catch (error) {
 				this.notificationShow = true
@@ -171,6 +174,14 @@ export default {
 		},
 		socketOnOpen() {
 			this.socket.onopen = () => {
+				// Send credentials as the first frame so they never appear in
+				// the WS URL (backend reads this exact JSON shape).
+				this.socket.send(JSON.stringify({
+					type: "login",
+					username: String(this.sshUser),
+					password: String(this.sshPassword),
+					port: String(this.sshPort)
+				}))
 				this.initTerm()
 			}
 		},

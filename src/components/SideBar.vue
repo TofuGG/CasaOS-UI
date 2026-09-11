@@ -250,4 +250,45 @@ export default {
 .ps__rail-y.ps--clicking .ps__thumb-y {
     width: 8px;
 }
+
+// ZimaOS-inspired modern sidebar
+.side-bar {
+    // Rounded scrollbar thumbs
+    .ps__thumb-x,
+    .ps__thumb-y {
+        border-radius: 999px;
+        background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    // Widget cards: rounded with a subtle lift on hover
+    .scroll-area {
+        .widget {
+            border-radius: var(--casa-radius, 14px);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--casa-shadow, 0 8px 24px rgba(15, 23, 42, 0.12));
+            }
+        }
+    }
+
+    // Settings nav items: rounded hover states + consistent spacing
+    .wsettings {
+        .dropdown-content {
+            border-radius: var(--casa-radius, 14px);
+
+            .item {
+                border-radius: var(--casa-radius-sm, 8px);
+                padding: 0.5rem 0.625rem;
+                margin: 0.25rem 0;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.08);
+                }
+            }
+        }
+    }
+}
 </style>

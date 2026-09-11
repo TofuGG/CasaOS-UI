@@ -1,6 +1,6 @@
 {
   "name": "casaos-main",
-  "version": "v0.4.5",
+  "version": "v0.4.6",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --mode dev",
@@ -17,7 +17,6 @@
     "@fontsource/roboto": "^5.0.5",
     "@icewhale/casaos-appmanagement-openapi": "latest",
     "@icewhale/casaos-openapi": "latest",
-    "@icewhale/icewhale-files-openapi": "latest",
     "@kangc/v-md-editor": "^1.7.11",
     "@mdi/font": "^6.9.96",
     "@tiptap/core": "^2.0.4",

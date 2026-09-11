@@ -899,7 +899,9 @@ export default {
 	position: relative;
 	z-index: 20;
 	height: 2.75rem;
-	background: rgba(255, 255, 255, 1);
+	background: hsla(0, 0%, 100%, 0.92);
+	border-bottom: 1px solid hsla(208, 16%, 91%, 0.7);
+	backdrop-filter: blur(12px);
 
 	.navbar-brand {
 		margin-left: 1.25rem;
@@ -911,6 +913,12 @@ export default {
 		.navbar-item {
 			height: 2.75rem;
 			padding: 0.75rem 0.75rem 0.5rem;
+			border-radius: 10px;
+			transition: background-color 0.2s ease;
+
+			&:hover {
+				background-color: hsla(208, 16%, 96%, 0.8);
+			}
 
 			.icon {
 				&:only-child {
@@ -934,8 +942,10 @@ export default {
 			min-width: 22.5rem;
 
 			.dropdown-content {
-				background: rgba(255, 255, 255, 1);
-				border-radius: 10px;
+				background: hsla(0, 0%, 100%, 0.98);
+				border-radius: 14px;
+				border: 1px solid hsla(208, 16%, 91%, 0.7);
+				box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
 
 				.dropdown-item {
 					padding: 0.875rem 1.25rem;
@@ -1014,6 +1024,22 @@ export default {
 	.icon {
 		color: rgb(74, 74, 74);
 	}
+
+	// Modern search input
+	.b-input {
+		.control {
+			.input {
+				border-radius: 10px;
+				border-color: var(--casa-border, #e2e8f0);
+				transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+				&:focus {
+					border-color: var(--casa-primary, #2563eb);
+					box-shadow: 0 0 0 3px var(--casa-primary-soft, rgba(37, 99, 235, 0.12));
+				}
+			}
+		}
+	}
 }
 
 .update-text-dot {
@@ -1058,7 +1084,8 @@ export default {
 
 @media (prefers-color-scheme: dark) {
 	.top-bar {
-		background: rgba(53, 54, 58, 1);
+		background: hsla(222, 47%, 11%, 0.92);
+		border-bottom-color: hsla(217, 33%, 30%, 0.8);
 
 		.picon {
 			color: #fff;

@@ -30,6 +30,9 @@
 				</b-button>
 			</ValidationObserver>
 		</div>
+		<div v-if="!isLoading" class="login-footer has-text-centered">
+			<a href="https://github.com/TofuGG/CasaOS" target="_blank" rel="noopener noreferrer">Unofficial fork of CasaOS · maintained by TofuGG</a>
+		</div>
 	</div>
 </template>
 
@@ -128,6 +131,21 @@ export default {
 
 		&.step4 {
 			width: 28rem;
+		}
+	}
+
+	.login-footer {
+		margin-top: 1.25rem;
+
+		a {
+			color: rgba(255, 255, 255, 0.85);
+			font-size: 0.85rem;
+			text-decoration: none;
+
+			&:hover {
+				color: #fff;
+				text-decoration: underline;
+			}
 		}
 	}
 }
