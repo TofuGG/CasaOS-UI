@@ -93,8 +93,18 @@ export default {
 	},
 
 	mounted() {
-		this.getDiskInfo(this.$store.state.hardwareInfo.sys_disk)
-		this.usbDisks = this.$store.state.hardwareInfo.sys_usb
+		// Guard: sys_disk / sys_usb only arrive via the MessageBus socket (live-push)
+		// and are absent from the /v1/sys/utilization HTTP endpoint. Without a
+		// MessageBus (e.g. a minimal Docker test stack), both are undefined and
+		// getDiskInfo(undefined) would throw a TypeError on diskInfo.size.
+		const diskInfo = this.$store.state.hardwareInfo.sys_disk
+		if (diskInfo) {
+			this.getDiskInfo(diskInfo)
+		}
+		const usbList = this.$store.state.hardwareInfo.sys_usb
+		if (usbList) {
+			this.usbDisks = usbList
+		}
 	},
 	methods: {
 		getDiskInfo(diskInfo) {
