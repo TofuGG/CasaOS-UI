@@ -1,5 +1,5 @@
 <template>
-	<div id="login-page" class="is-flex is-justify-content-center is-align-items-center ">
+	<div id="login-page" class="is-flex is-flex-direction-column is-justify-content-center is-align-items-center ">
 		<div v-if="!isLoading" class="login-panel step4 is-shadow">
 			<div class="is-flex is-justify-content-center pb-3 ">
 				<div class="has-text-centered">
