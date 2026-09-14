@@ -1,6 +1,6 @@
 {
   "name": "casaos-main",
-  "version": "v0.4.6",
+  "version": "v0.4.7",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --mode dev",

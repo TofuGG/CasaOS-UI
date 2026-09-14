@@ -31,6 +31,15 @@
 								type="is-dark" @input="handleInput"></b-switch>
 						</b-field>
 					</div>
+					<div class="dropdown-divider"></div>
+					<div class="is-flex is-align-items-center item">
+						<b-icon icon="clock" pack="casa" class="mr-2"></b-icon>
+						<b class="is-flex-grow-1">{{ $t('Refresh Rate') }}</b>
+						<b-select v-model="refreshInterval" class="widgets-select" size="is-small"
+							@input="onRefreshIntervalChange">
+							<option v-for="opt in refreshOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+						</b-select>
+					</div>
 				</b-dropdown-item>
 			</b-dropdown>
 		</div>
@@ -55,7 +64,9 @@ export default {
 		return {
 			apps: [],
 			settingsData: [],
-			position: "is-top-left"
+			position: "is-top-left",
+			refreshInterval: 5000,
+			refreshOptions: [{ value: 250, label: '0.25s' }, { value: 500, label: '0.5s' }, { value: 1000, label: '1s' }, { value: 2000, label: '2s' }, { value: 3000, label: '3s' }, { value: 5000, label: '5s' }]
 		}
 	},
 	model: {
@@ -87,6 +98,11 @@ export default {
 			const componentConfig = widgetsComponents(fileName)
 			this.apps.push({ app: componentConfig })
 		});
+		// load dashboard hardware-status refresh interval
+		this.$api.sys.getUtilizationInterval().then((res) => {
+			const interval = res.data?.interval_ms
+			this.refreshInterval = this.refreshOptions.some(opt => opt.value === interval) ? interval : 5000
+		}).catch(() => {});
 	},
 	mounted() {
 		window.addEventListener('resize', this.onRezise);
@@ -108,6 +124,10 @@ export default {
 		handleInput() {
 			this.$emit('change', this.settingsData)
 		},
+		onRefreshIntervalChange(value) {
+			this.refreshInterval = value
+			this.$api.sys.setUtilizationInterval(value).catch(() => {});
+		},
 		onRezise() {
 			// let container = document.querySelector(".scroll-area")
 			//console.log(container.offsetHeight);
@@ -124,6 +144,25 @@ export default {
 
 	.item {
 		margin: 1.25rem 0;
+	}
+
+	.widgets-select {
+		.select {
+			&::after {
+				border-color: #fff !important;
+			}
+
+			select {
+				background-color: transparent !important;
+				border-color: rgba(255, 255, 255, 0.5) !important;
+				color: #fff;
+
+				option {
+					background-color: #000;
+					color: #fff;
+				}
+			}
+		}
 	}
 
 	.circle-btn {

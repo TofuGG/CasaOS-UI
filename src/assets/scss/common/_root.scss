@@ -37,6 +37,12 @@ html {
 	src: url('../fonts/britti-sans-regular.woff') format('woff');
   }
 
+@font-face {
+	font-family: 'PixelatedElegance';
+	src: url('../fonts/pixelated-elegance-regular.ttf') format('truetype');
+	font-display: swap;
+  }
+
 @media screen and (max-width: 1024px) {
     .container {
         margin: 0 1rem;

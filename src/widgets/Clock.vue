@@ -23,8 +23,12 @@ export default {
 			timeText: "",
 			dateText: "",
 			lang: this.$i18n.locale.replace("_", "-"),
-			timeFormat: localStorage.getItem("timeFormat") ? localStorage.getItem("timeFormat") : "HH:MM",
 		};
+	},
+	computed: {
+		timeFormat() {
+			return this.$store.state.timeFormat;
+		},
 	},
 	mounted() {
 		if (this.timer) {
@@ -42,6 +46,9 @@ export default {
 			},
 			deep: true,
 		},
+		timeFormat() {
+			this.updateClock();
+		},
 	},
 
 	methods: {
@@ -57,9 +64,8 @@ export default {
 			});
 		},
 		changeFormat() {
-			this.timeFormat = this.timeFormat == "HH:MM" ? "h:MM TT" : "HH:MM";
-			localStorage.setItem("timeFormat", this.timeFormat);
-			this.updateClock();
+			const nextFormat = this.timeFormat == "HH:MM" ? "h:MM TT" : "HH:MM";
+			this.$store.commit("SET_TIMEFORMAT", nextFormat);
 		},
 	},
 };
@@ -72,10 +78,12 @@ export default {
 	text-align: left;
 
 	.time {
+		font-family: $family-pixel;
 		font-size: 2rem;
-		font-weight: 600;
+		font-weight: 400;
 		line-height: 1.125em;
 		color: $grey-100;
+		-webkit-font-smoothing: none;
 	}
 
 	.date {

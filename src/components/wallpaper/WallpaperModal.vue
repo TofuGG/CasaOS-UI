@@ -173,7 +173,15 @@ export default {
 			return `${this.$protocol}//${this.$baseURL}/v1/users/current/image/${wallpaperConfig}?token=${accessToken}&type=wallpaper`
 		},
 		parseUrl(serverUrl) {
+			if (!serverUrl) {
+				return '';
+			}
 			const newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
+			// Reject non-http(s) URLs (e.g. stale file:// wallpapers persisted
+			// from a session where the UI was opened directly from disk).
+			if (!/^https?:\/\//i.test(newUrl)) {
+				return '';
+			}
 			return newUrl;
 		},
 	}

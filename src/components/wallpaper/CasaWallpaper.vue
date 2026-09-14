@@ -68,9 +68,19 @@ export default {
 			})
 		},
 		parseUrl(serverUrl) {
+			if (!serverUrl) {
+				return '';
+			}
 			// serverUrl.replace('/ui', '');
 			let newUrl = serverUrl.replace('SERVER_URL', `${this.$protocol}//${this.$baseURL}`)
 			newUrl = newUrl.replace('/ui', '').replace('/user/', '/users/');
+			// A persisted wallpaper can be a file:// path (e.g. from a session
+			// where the UI was opened directly from disk). Browsers block http
+			// pages from loading file:// URLs ("Security Error ... may not load
+			// or link to file:///.") — drop anything that is not http(s).
+			if (!/^https?:\/\//i.test(newUrl)) {
+				return '';
+			}
 			return newUrl;
 		},
 	},

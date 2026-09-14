@@ -59,6 +59,16 @@ const sys = {
 		return api.get(`${PREFIX}/utilization`);
 	},
 
+	// get dashboard hardware-status refresh interval (ms)
+	getUtilizationInterval() {
+		return api.get(`${PREFIX}/utilization/interval`);
+	},
+
+	// set dashboard hardware-status refresh interval (ms, 250-5000)
+	setUtilizationInterval(interval_ms) {
+		return api.put(`${PREFIX}/utilization/interval`, { interval_ms });
+	},
+
 	// proxy request
 	getProxyRequestContent(url) {
 		return api.get(`${PREFIX}/proxy?url=${url}`)

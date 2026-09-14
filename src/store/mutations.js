@@ -1,3 +1,5 @@
+import { applyTheme } from '@/utils/theme'
+
 const mutations = {
   // User and tokens
   SET_ACCESS_TOKEN(state, token) {
@@ -27,6 +29,17 @@ const mutations = {
 
   SET_SIDEBAR_CLOSE(state) {
     state.sidebarOpen = false
+  },
+
+  SET_THEME(state, val) {
+    state.theme = val
+    localStorage.setItem('casaos_theme', val)
+    applyTheme(val)
+  },
+
+  SET_TIMEFORMAT(state, val) {
+    state.timeFormat = val
+    localStorage.setItem('timeFormat', val)
   },
 
   TOOGLE_SIDEBAR_STATE(state) {

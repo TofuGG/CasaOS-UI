@@ -4,6 +4,32 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=IceWhaleTech_CasaOS-UI&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=IceWhaleTech_CasaOS-UI)
 
+> ⚠️ **UNOFFICIAL FORK — NOT THE OFFICIAL RELEASE.** This is a **TofuGG** community
+> fork of the CasaOS UI, not affiliated with or endorsed by the official
+> CasaOS / IceWhaleTech team. It is provided **AS-IS** with **no warranty** and
+> **no official support**. **USE AT YOUR OWN RISK.**
+
+## TofuGG fork additions
+
+- **Dark mode** — full dark theme (`html[data-theme="dark"]`) with its own
+  palette, toggle in the top-bar settings, stored per-browser, applied before
+  first paint (no white flash).
+- **Time format setting** — 12 / 24-hour choice in the top-bar settings;
+  live-updates the dashboard clock.
+- **Dashboard refresh rate** — configurable hardware-statistics push interval
+  (0.25 s – 5 s) in the widget settings.
+- **Pixelated Elegance clock font** — retro pixel digits for the Clock widget
+  and CPU/RAM percentages (CC0 font, shipped locally).
+- **App store / hover visibility fixes** — readable text in dark mode across
+  app cards, dropdowns, markdown detail pages and merge-storage panels.
+- **Resilience fixes** — hang-safe app-store loading (empty grids, missing
+  `installed` list), guarded Disks widget, SPA deep-link fallback on the
+  gateway, no unhandled promise rejections from best-effort message-bus
+  telemetry.
+- **Real production builds** — `npm run build` now emits minified bundles
+  (`.env.production` uses `NODE_ENV=production`; ~60 % smaller JS) and only
+  `VUE_APP_*` environment variables are baked into the bundle.
+
 # How to develop this project
 
 ## Prerequisites
@@ -31,8 +57,12 @@ pnpm dev
 pnpm install
 
 # build
-pnpm build 
+pnpm build
 ```
+
+The production bundle is emitted to `build/sysroot/var/lib/casaos/www/`
+(nginx/static-server root of a CasaOS install). Building with `npm run build`
+is equivalent to `pnpm build`.
 
 # How to test this project
 

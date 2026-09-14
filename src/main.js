@@ -13,7 +13,11 @@ import VueSocialSharing from 'vue-social-sharing'
 import VueSocketIOExt from 'vue-socket.io-extended';
 import messageBus from '@/events/index.js'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
+import { applyTheme, getInitialTheme } from '@/utils/theme'
 
+
+// Apply the saved (or system-preferred) theme before the app mounts
+applyTheme(getInitialTheme())
 
 // Import Styles
 import '@/assets/scss/app.scss'
@@ -32,7 +36,11 @@ const baseIp = isDev ? `${devIp}` : `${localhostName}`
 const baseURL = isDev ? `${devIp}:${devPort}` : `${localhost}`
 const wsURL = `${wsProtocol}//${baseURL}`
 
-const socket = io( {
+// Connect to the backend's message-bus endpoint directly. Previously io() was
+// called with NO URL, so socket.io connected to window.location.origin — in
+// dev that is the webpack dev server (the ws://localhost:8080 failures) and
+// every websocket attempt died before ever reaching the backend.
+const socket = io(wsURL, {
 	transports: ['websocket', 'polling'],
 	path: '/v2/message_bus/socket.io/',
 });

@@ -18,7 +18,17 @@ export default function messageBus(name, params) {
 		message_bus[name](params).then(res => {
 			let properties = res.properties;
 			let eventName = res.name;
-			api.post(`/v2/message_bus/event/casaos-ui/${eventName}`, properties);
+			return api.post(`/v2/message_bus/event/casaos-ui/${eventName}`, properties);
+		}).catch(error => {
+			// Event publishing is best-effort telemetry: a missing/unstarted
+			// message bus (or a 405 on this endpoint) must never surface as an
+			// unhandled promise rejection OR as console spam. 404/405 = the
+			// stack has no message-bus service at all — expected, stay silent.
+			const status = error?.response?.status;
+			if (status === 404 || status === 405) {
+				return;
+			}
+			console.warn(`[messageBus] event publish failed: ${error.message || error}`);
 		})
 	} catch (error) {
 		console.log(error);

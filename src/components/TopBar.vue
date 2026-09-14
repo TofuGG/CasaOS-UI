@@ -80,6 +80,12 @@ export default {
     isRaspberryPi() {
       return this.deviceModel.toLowerCase().includes('raspberry')
     },
+    isDark() {
+      return this.$store.state.theme === 'dark'
+    },
+    timeFormat() {
+      return this.$store.state.timeFormat
+    },
   },
   watch: {
     'barData.lang': {
@@ -188,6 +194,24 @@ export default {
      */
     showSideBar() {
       this.$store.commit('TOOGLE_SIDEBAR_STATE')
+    },
+
+    /**
+     * @description: Set light / dark theme
+     * @param {boolean} val true = dark
+     * @return {*}
+     */
+    setTheme(val) {
+      this.$store.commit('SET_THEME', val ? 'dark' : 'light')
+    },
+
+    /**
+     * @description: Set 12/24 hour clock format
+     * @param {string} val "HH:MM" (24h) or "h:MM TT" (12h)
+     * @return {*}
+     */
+    setTimeFormat(val) {
+      this.$store.commit('SET_TIMEFORMAT', val)
     },
 
     /*************************************************
@@ -596,6 +620,51 @@ export default {
             </div>
           </div>
           <!-- Language End -->
+
+          <!-- Time Format Start -->
+          <div
+            class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+          >
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon class="mr-1 ml-2" icon="clock-outline" size="is-20" />
+              {{ $t("Time Format") }}
+            </div>
+            <div>
+              <b-field>
+                <b-select
+                  :value="timeFormat"
+                  class="set-select"
+                  size="is-small"
+                  @input="setTimeFormat"
+                >
+                  <option value="HH:MM">{{ $t("24 Hour") }}</option>
+                  <option value="h:MM TT">{{ $t("12 Hour") }}</option>
+                </b-select>
+              </b-field>
+            </div>
+          </div>
+          <!-- Time Format End -->
+
+          <!-- Dark Mode Switch Start -->
+          <div
+            class="is-flex is-align-items-center mb-1 _is-large _box hover-effect _is-radius pr-2 mr-4 ml-4"
+          >
+            <div class="is-flex is-align-items-center is-flex-grow-1 _is-normal">
+              <b-icon class="mr-1 ml-2" icon="weather-night" size="is-20" />
+              {{ $t("Dark Mode") }}
+            </div>
+            <div>
+              <b-field>
+                <b-switch
+                  :value="isDark"
+                  class="is-flex-direction-row-reverse mr-0 _small"
+                  type="is-dark"
+                  @input="setTheme"
+                />
+              </b-field>
+            </div>
+          </div>
+          <!-- Dark Mode Switch End -->
 
           <!-- WebUI Port Start -->
           <div

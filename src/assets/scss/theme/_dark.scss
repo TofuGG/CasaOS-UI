@@ -1,0 +1,774 @@
+/************************************
+ * CasaOS Dark Mode
+ *
+ * Native dark theme driven by the `data-theme="dark"` attribute on <html>.
+ * Palette matches the Dark Reader capture of the live dashboard:
+ *   bg #181a1b · surface #1f2324 · text #e8e6e3 · border #454a4d
+ *   link #3391ff · placeholder #b2aba1 · selection #004daa
+ *
+ * Toggle lives in TopBar → Settings → Dark Mode (localStorage `casaos_theme`).
+ ************************************/
+
+// Dark-mode design tokens in the SAME namespace as `theme/tokens`, so any
+// component already consuming `var(--casa-*)` adapts automatically.
+html[data-theme="dark"] {
+  --casa-primary: #3b82f6;
+  --casa-primary-hover: #2563eb;
+  --casa-primary-soft: rgba(59, 130, 246, 0.18);
+
+  --casa-bg: #181a1b;
+  --casa-surface: #1f2324;
+  --casa-surface-hover: #262a2b;
+  --casa-border: #454a4d;
+  --casa-border-strong: #5c6265;
+
+  --casa-text: #e8e6e3;
+  --casa-text-secondary: #c8c2bb;
+  --casa-text-muted: #938d86;
+
+  --casa-success: #22c55e;
+  --casa-warning: #f59e0b;
+  --casa-danger: #ef4444;
+  --casa-info: #3b82f6;
+
+  --casa-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --casa-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --casa-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+/**********************************************************************
+ * Base
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  body,
+  #app {
+    background-color: #181a1b;
+  }
+
+  #app {
+    color: #e8e6e3;
+  }
+
+  // Dim the wallpaper so a bright image doesn't fight the dark UI.
+  #background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 12, 13, 0.45);
+  }
+
+  // Soften the glass overlay used by the dashboard widgets.
+  .blur-background {
+    background-color: rgba(20, 22, 23, 0.55);
+  }
+
+  // Top bar — translucent dark glass instead of white glass.
+  .top-bar {
+    background: rgba(24, 26, 27, 0.92);
+    border-bottom: 1px solid rgba(69, 74, 77, 0.7);
+
+    ._footer {
+      border-top: 1px solid rgb(48 52 55);
+    }
+
+    ._title {
+      color: #e8e6e3;
+      border-bottom: 1px solid rgb(48 52 55);
+    }
+  }
+
+  ::selection {
+    background-color: #004daa;
+    color: #e8e6e3;
+  }
+}
+
+/**********************************************************************
+ * Text
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  $text-on-dark: #e8e6e3;
+  $text-secondary-on-dark: #c8c2bb;
+  $text-muted-on-dark: #938d86;
+
+  .has-text-grey-100,
+  .has-text-gray-100,
+  .has-text-grey-200,
+  .has-text-gray-200,
+  .has-text-grey,
+  .has-text-grey-light {
+    color: $text-on-dark !important;
+  }
+
+  .has-text-grey-400,
+  .has-text-gray-400,
+  ._has-text-gray {
+    color: $text-secondary-on-dark !important;
+  }
+
+  .has-text-grey-600,
+  .has-text-gray-600,
+  .has-text-gray-font,
+  .gray-font {
+    color: $text-muted-on-dark !important;
+  }
+
+  // Labels, checkbox/switch text, table cells — default to the light text.
+  ._is-normal,
+  ._is-footer,
+  .label,
+  .b-checkbox.checkbox,
+  .b-switch.switch,
+  .table td,
+  .table th,
+  .dropdown-item:not(.is-active),
+  .menu-label,
+  .menu-list a {
+    color: $text-on-dark;
+  }
+}
+
+/**********************************************************************
+ * Surfaces (Bulma / Buefy)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // Generic "card-like" containers
+  .box,
+  .card,
+  .panel,
+  .panel-heading,
+  .panel-block,
+  .message,
+  .message-header,
+  .message-body,
+  .notification,
+  .navbar-dropdown,
+  .hero,
+  .level,
+  .content,
+  .media,
+  .table,
+  .table-container,
+  .b-table .table,
+  .table-wrapper,
+  .tabs,
+  .dropdown-content,
+  .dropdown-menu,
+  .modal-card,
+  .modal-card-head,
+  .modal-card-body,
+  .modal-card-foot,
+  .file-cta,
+  .file-name,
+  .pagination-link,
+  .pagination-previous,
+  .pagination-next,
+  .pagination-ellipsis {
+    background-color: var(--casa-surface, #1f2324) !important;
+    border-color: var(--casa-border, #454a4d) !important;
+    color: var(--casa-text, #e8e6e3);
+  }
+
+  .modal-card-title,
+  .modal-card-head .title,
+  .card-header-title,
+  .panel-heading,
+  .panel-title {
+    color: var(--casa-text, #e8e6e3);
+  }
+
+  // Modal backdrop already dark — keep it, but tighten it a touch.
+  .modal-background {
+    background-color: rgba(0, 0, 0, 0.65);
+  }
+
+  // The full-screen file browser is a white .modal-card — flip it.
+  .file-panel .modal-card {
+    background-color: #1d2022 !important;
+  }
+
+  // Fine-grained file browser surfaces
+  .file-panel {
+    .modal-card-body .nav-bar {
+      background: #202425 !important;
+      border-color: var(--casa-border, #454a4d);
+    }
+
+    .popper {
+      background-color: #1f2324 !important;
+      color: #e8e6e3;
+    }
+
+    .modal-card-head {
+      border-bottom-color: rgb(48 52 55) !important;
+    }
+
+    .modal-card-foot {
+      background-color: #1d2022 !important;
+    }
+  }
+}
+
+/**********************************************************************
+ * Forms & controls
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .input,
+  .textarea,
+  .select select,
+  .taginput .taginput-container.is-focusable,
+  .control .input,
+  .control .textarea,
+  .datepicker .input,
+  .autocomplete .dropdown-menu,
+  .timepicker .dropdown-menu,
+  .taginput .taginput-container,
+  .pagination .select select {
+    background-color: var(--casa-surface-hover, #262a2b) !important;
+    border-color: var(--casa-border, #454a4d) !important;
+    color: var(--casa-text, #e8e6e3) !important;
+
+    &::placeholder {
+      color: #b2aba1;
+    }
+
+    &:hover,
+    &:focus {
+      border-color: var(--casa-border-strong, #5c6265);
+    }
+  }
+
+  .select {
+    &::after {
+      border-color: #c8c2bb !important;
+    }
+
+    select option,
+    option {
+      background-color: #1f2324;
+      color: #e8e6e3;
+    }
+  }
+
+  .fieldset,
+  .field {
+    .label {
+      color: #c8c2bb;
+    }
+  }
+
+  .control .icon,
+  .select .icon,
+  .icon {
+    color: inherit;
+  }
+}
+
+/**********************************************************************
+ * Buttons
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .button {
+    &.is-light,
+    &:not(.is-primary):not(.is-link):not(.is-info):not(.is-success):not(.is-warning):not(.is-danger):not(.is-dark):not(.is-text) {
+      background-color: var(--casa-surface-hover, #262a2b);
+      border-color: var(--casa-border, #454a4d);
+      color: var(--casa-text, #e8e6e3);
+
+      &:hover {
+        background-color: #2c3133;
+        color: #ffffff;
+      }
+    }
+
+    &.is-dark {
+      background-color: #3a3f42;
+      color: #f5f5f4;
+
+      &:hover {
+        background-color: #454a4d;
+      }
+    }
+
+    &.is-text {
+      color: var(--casa-text, #e8e6e3);
+    }
+  }
+}
+
+/**********************************************************************
+ * Switches / checkboxes
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .switch input[type="checkbox"] + .check {
+    background: transparent;
+    border-color: #8a8480 !important;
+
+    &::before {
+      background: #e8e6e3;
+    }
+  }
+
+  .switch input[type="checkbox"]:checked + .check {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+
+    &::before {
+      background: #ffffff;
+    }
+  }
+
+  .b-checkbox.checkbox input[type="checkbox"] + .check {
+    background: transparent;
+    border-color: #8a8480;
+  }
+
+  .b-checkbox.checkbox input[type="checkbox"]:checked + .check {
+    background-color: #2563eb;
+    border-color: #2563eb;
+  }
+}
+
+/**********************************************************************
+ * Dropdowns / menus (TopBar settings, account, widgets)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .dropdown-content {
+    background-color: #1d2022 !important;
+    border: 1px solid #33383b;
+
+    .dropdown-item {
+      color: #e8e6e3;
+
+      &:hover:not(.is-active) {
+        background-color: rgba(255, 255, 255, 0.06);
+      }
+    }
+  }
+
+  .dropdown-divider {
+    background-color: #33383b;
+  }
+
+  // hover row inside the top-bar settings dropdown
+  ._box.hover-effect:hover,
+  .hover-effect:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .set-select select {
+    color: #e8e6e3;
+  }
+}
+
+/**********************************************************************
+ * Toasts / snackbars
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .toast,
+  .b-toast .notification,
+  .toast-message,
+  .snackbar {
+    background-color: #262a2b !important;
+    color: #e8e6e3 !important;
+
+    .title,
+    .subtitle {
+      color: #e8e6e3;
+    }
+  }
+}
+
+/**********************************************************************
+ * Update / feedback modals (seen in the Dark Reader capture)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .update-info-container,
+  .feedback-info-container {
+    background: #1f2324 !important;
+    border: 1px solid rgba(69, 74, 77, 0.6) !important;
+    color: #e8e6e3;
+  }
+
+  .feedback-modal .modal-card-body {
+    color: #e8e6e3;
+  }
+}
+
+/**********************************************************************
+ * Charts (apexcharts)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .apexcharts-canvas {
+    .apexcharts-text,
+    .apexcharts-title-text,
+    .apexcharts-subtitle-text {
+      fill: #c8c2bb;
+    }
+
+    .apexcharts-tooltip {
+      background: #262a2b !important;
+      border-color: #33383b !important;
+      color: #e8e6e3;
+    }
+
+    .apexcharts-gridline,
+    .apexcharts-xaxis-tick {
+      stroke: #33383b;
+    }
+
+    .apexcharts-legend-text {
+      color: #c8c2bb !important;
+    }
+  }
+}
+
+/**********************************************************************
+ * Misc
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // White "flight" surfaces become dark; dark ones stay dark.
+  .flight-bg {
+    background-color: #1f2324 !important;
+  }
+
+  .fdark-bg {
+    background-color: #1e1e1e !important;
+  }
+
+  // Text editors / markdown editors inside modals
+  .v-md-editor,
+  .v-md-textarea-editor textarea,
+  .vue-codemirror,
+  .CodeMirror {
+    background-color: #1e1e1e;
+    color: #e8e6e3;
+  }
+
+  // Terminal card is already dark — keep it.
+  // Tables: zebra + header tweaks
+  .table {
+    &.is-striped tbody tr:not(.is-selected):nth-child(even) {
+      background-color: #25292a;
+    }
+
+    tr.is-selected {
+      background-color: #2563eb;
+    }
+  }
+
+  .breadcrumb li.is-active a {
+    color: #3391ff;
+  }
+
+  a,
+  .link {
+    color: #3391ff;
+  }
+}
+
+/**********************************************************************
+ * Hardcoded light/dark misses — fixed 2026-09-12
+ * (rules prefixed with html[data-theme="dark"] so they beat
+ *  equal-specificity chunk CSS injected at runtime)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // TopBar icons (settings/account/terminal) — were rgb(74,74,74) on dark
+  .top-bar .icon,
+  .top-bar .picon {
+    color: #c8c2bb;
+  }
+
+  // Settings dropdown selects (Language / Search Engine / Time Format):
+  // base rule pins border+arrow to #000, which is invisible on dark
+  .set-select select {
+    background-color: #262a2b !important;
+    border-color: #454a4d !important;
+    color: #e8e6e3 !important;
+  }
+
+  .set-select .select::after {
+    border-color: #8a8480 !important;
+  }
+
+  // Power / reboot modal
+  ._modal {
+    .modal-content .message {
+      .message-header {
+        background-color: #1f2324;
+        border-bottom: 1px solid #33383b;
+
+        > div {
+          color: #e8e6e3;
+        }
+      }
+
+      .message-body {
+        background-color: #1f2324;
+        color: #e8e6e3;
+      }
+    }
+
+    footer.has-background-white {
+      background-color: #1f2324 !important;
+      border-color: #33383b;
+    }
+  }
+
+  ._has-background-blue {
+    background: #2563eb; /* keep the white text, 5.0:1 */
+  }
+
+  // File browser — whole container was pure white
+  .full-screen {
+    background-color: #1d2022 !important;
+  }
+
+  // Floating "+" upload button was a white circle
+  .drop-button {
+    background-color: #262a2b;
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5);
+
+    .circle-area {
+      border-color: #454a4d;
+    }
+  }
+
+  // Draggable item circles in the drop UI were white
+  .up-layer {
+    background-color: #262a2b;
+    border-color: #454a4d;
+  }
+
+  // The upload button's SVG is slate #5A6C7C — lift it on the dark circle
+  .drop-button .up-layer img {
+    filter: brightness(1.45);
+  }
+
+  // Login / Welcome glass panels were translucent white
+  #login-page .login-panel {
+    background: rgba(24, 26, 27, 0.62) !important;
+    border: 1px solid rgba(69, 74, 77, 0.6);
+    backdrop-filter: blur(1rem);
+
+    .input {
+      background: rgba(31, 35, 36, 0.72);
+      border-color: rgba(69, 74, 77, 0.6);
+      color: #e8e6e3;
+    }
+  }
+
+  // Storage "CasaOS HD" pill was white
+  .combination-box .has-background-white {
+    background-color: #1f2324 !important;
+    color: #e8e6e3;
+  }
+
+  // Warm amber alert chips — glare-y pale yellow
+  .message-alert,
+  .pri-message-alert {
+    background: #3a3324;
+    color: #f5c14b;
+  }
+}
+
+/**********************************************************************
+ * App store / app cards — barely-visible text fix (2026-09-12)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // Bulma headings default to a dark color — lift them everywhere in dark.
+  .title,
+  .subtitle {
+    color: #e8e6e3;
+  }
+
+  .subtitle {
+    color: #c8c2bb;
+  }
+
+  // Bulma text helpers that point at dark shades (they carry !important upstream).
+  .has-text-black,
+  .has-text-black-bis,
+  .has-text-black-ter,
+  .has-text-dark,
+  .has-text-grey-darker,
+  .has-text-grey-dark {
+    color: #e8e6e3 !important;
+  }
+
+  // App cards stay WHITE glass in dark mode while their `.one-line` text uses
+  // var(--casa-text) — which our dark tokens make near-white. White-on-white.
+  .app-card {
+    background: rgba(31, 35, 36, 0.92) !important;
+    border-color: var(--casa-border, #454a4d);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+
+    .one-line {
+      color: #e8e6e3;
+    }
+  }
+
+  // Card dropdown actions were near-black text (invisible on the dark card).
+  // NOTE: the dropdown is TELEPORTED (`append-to-body`) → it renders at <body>,
+  // so these MUST be scoped via `.app-card-drop` (the portal root). Scoping via
+  // `.app-card` descendants never matches the teleported menu.
+  .app-card-drop .dropdown-content .button.is-text {
+    color: #e8e6e3;
+  }
+
+  .app-card-drop .dropdown-content .button span + span i {
+    color: #c8c2bb;
+  }
+
+  // Card tooltip copied a dark text color onto the dark tooltip bubble
+  .in-card.b-tooltip .tooltip-content {
+    color: #e8e6e3;
+  }
+}
+
+/**********************************************************************
+ * Hover "glow" washes — pale white/pink hovers were blinding in dark
+ * (TopBar icons, store `.app-item` rows, AppCard dropdown rows).
+ * 2026-09-12
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // TopBar icon hover — was `hsla(208,16%,96%,0.8)` pale wash over dark glass.
+  .top-bar .navbar-item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  // Store app grid rows — was solid near-white `hsl(0,0%,97%)`; light text
+  // (~#e8e6e3) went invisible on the pale row. Subtle dark tint instead.
+  .app-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  // App card hover ring — replace the pale blue-grey border with a dark one
+  // and keep the lift readable on dark backgrounds.
+  .app-card:hover {
+    border-color: #5c6265;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  }
+
+  // Card dropdown rows — soft-row / hover / active all went pale.
+  .app-card-drop .dropdown-content .button:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .app-card-drop .dropdown-menu .dropdown-item.is-active {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .app-card-drop .dropdown-content .button.has-text-red:hover {
+    background: rgba(248, 113, 113, 0.12);
+  }
+}
+
+/**********************************************************************
+ * App detail markdown — VMdEditor github theme forces a white block
+ * (`.github-markdown-body { background:#fff; color:#24292e }`) inside the
+ * dark store modal. 2026-09-12
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  .github-markdown-body {
+    background-color: #1e1e1e;
+    color: #e8e6e3;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: #e8e6e3;
+    }
+
+    code,
+    tt {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #f0c674;
+    }
+
+    pre {
+      background-color: #25292a;
+    }
+
+    pre code,
+    pre code.hljs {
+      background-color: transparent;
+      color: #e8e6e3;
+    }
+
+    blockquote {
+      color: #c8c2bb;
+      border-left-color: #5c6265;
+    }
+
+    a,
+    a code {
+      color: #3391ff;
+    }
+
+    table tr {
+      background-color: transparent;
+    }
+
+    table tr:nth-child(2n) {
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+
+    table th,
+    table td {
+      border-color: #454a4d;
+    }
+
+    hr {
+      background-color: #454a4d;
+    }
+  }
+}
+
+/**********************************************************************
+ * Audit fixes — storage panels gray text, swiper bullet, slider marks
+ * (2026-09-12)
+ **********************************************************************/
+
+html[data-theme="dark"] {
+  // MergeStorages / Storage panels custom gray text helpers
+  // (`hsla(208,20%,20%,1)` ≈ near-black in light mode).
+  ._has-text-gray-800 {
+    color: #e8e6e3 !important;
+  }
+
+  ._has-text-gray-600 {
+    color: #c8c2bb !important;
+  }
+
+  // CoreService welcome-carousel active bullet was #FFFFFF — pick bright blue.
+  .swiper-pagination-bullet-active {
+    background: #3391ff !important;
+  }
+
+  // ComposeConfig CPU/RAM slider tick marks were white dots on a #ccc ring.
+  .vue-slider-mark-step {
+    background-color: #1f2324;
+    box-shadow: 0 0 0 2px #5c6265;
+  }
+}

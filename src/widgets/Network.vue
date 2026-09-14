@@ -196,8 +196,8 @@ export default {
 					this.networks[index][0].data.shift()
 				}
 				if (this.networks[index][0].cacheData > 0) {
-					const timeGap = this.networks[index][0].cacheTime == 0 ? 2 : el.time - this.networks[index][0].cacheTime
-					this.networks[index][0].data.push(this.covertToKB((el.bytesSent - this.networks[index][0].cacheData) / timeGap))
+					const timeGap = this.networks[index][0].cacheTime == 0 ? 2000 : el.time - this.networks[index][0].cacheTime
+					this.networks[index][0].data.push(this.covertToKB((el.bytesSent - this.networks[index][0].cacheData) / (timeGap / 1000)))
 				}
 				this.networks[index][0].cacheData = el.bytesSent;
 				this.networks[index][0].cacheTime = el.time;
@@ -207,8 +207,8 @@ export default {
 					this.networks[index][1].data.shift()
 				}
 				if (this.networks[index][1].cacheData > 0) {
-					const timeGap = this.networks[index][1].cacheTime == 0 ? 2 : el.time - this.networks[index][1].cacheTime
-					this.networks[index][1].data.push(this.covertToKB((el.bytesRecv - this.networks[index][1].cacheData) / timeGap))
+					const timeGap = this.networks[index][1].cacheTime == 0 ? 2000 : el.time - this.networks[index][1].cacheTime
+					this.networks[index][1].data.push(this.covertToKB((el.bytesRecv - this.networks[index][1].cacheData) / (timeGap / 1000)))
 				}
 				this.networks[index][1].cacheData = el.bytesRecv;
 				this.networks[index][1].cacheTime = el.time;

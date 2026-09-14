@@ -135,11 +135,13 @@ export default {
 	}
 
 	.per {
+		font-family: $family-pixel;
 		font-size: 1.5rem;
-		font-weight: 500;
+		font-weight: 400;
 		color: $grey-200;
 		position: relative;
 		line-height: 2rem;
+		-webkit-font-smoothing: none;
 
 		&::after {
 			content: "%";

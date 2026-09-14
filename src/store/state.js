@@ -1,3 +1,5 @@
+import { getInitialTheme } from '@/utils/theme'
+
 const state = {
   // User
   access_token: '',
@@ -16,6 +18,12 @@ const state = {
   initKey: '', // Initialization key for reg
 
   sidebarOpen: false,
+
+  // Theme (light / dark)
+  theme: getInitialTheme(),
+
+  // Clock time format ("HH:MM" = 24h, "h:MM TT" = 12h)
+  timeFormat: localStorage.getItem("timeFormat") || "HH:MM",
 
   // System Config
   searchEngine: '',

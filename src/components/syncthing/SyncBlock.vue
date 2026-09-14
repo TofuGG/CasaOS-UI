@@ -61,9 +61,10 @@ export default {
 
 	methods: {
 		async checkSyncStatus() {
-			// const res = await this.$api.sys.getSystemApps()
-			const listRes = await this.$api.container.getMyAppList();
-			const systemApps = listRes.data ? listRes.data.data.casaos_apps : [];
+			try {
+				// const res = await this.$api.sys.getSystemApps()
+				const listRes = await this.$api.container.getMyAppList();
+				const systemApps = listRes.data ? listRes.data.data.casaos_apps : [];
 			const is8384SyncInstalled = systemApps.some(app => {
 				return app.image.includes('syncthing') && app.port === 8384
 			})
@@ -94,7 +95,17 @@ export default {
 					this.syncBaseURL = `http://${this.$baseIp}:${this.syncPort}`
 				}
 			}
-
+			} catch (error) {
+				// 404 = the legacy /v1/container endpoint is absent in this
+				// stack (no app-management / Docker) — expected, stay silent
+				// and keep the panel in its default state.
+				const status = error?.response?.status;
+				if (status !== 404) {
+					console.warn('[SyncBlock] could not load container list:', error.message || error);
+				}
+				this.isSyncInstalled = false;
+				this.isSyncRunning = false;
+			}
 
 		},
 		async openSyncPanel() {
